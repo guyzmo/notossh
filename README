@@ -1,0 +1,23 @@
+INSTALL
+
+1/ copy 'irssi-notify-listener.py' on your client system (i.e. where you've got 
+    your GUI and want the notifications to be shown)
+2/ copy 'notify.pl' to your ~/.irssi/scripts folder
+3/ copy 'notify-send' somewhere in the path of the same box where notify.pl is.
+4/ be sure notify-send and irssi-notify-listener.py are chmod +x
+5/ launch irssi-notify-listener.py on your client system (with nohup can be a nice idea... it has no output)
+6/ from your client system do ssh user@myserver -R 4222:localhost:4222
+7/ do '/load perl' and '/script load notify.pl' in irssi
+8/ configure the 'highlights' in your client. (if you don't know how RTFM !)
+9/ if you don't like it... HACK IT !
+
+OPTIONS
+
+there are no options. Some variables can be changed, UTSL. And it can be hacked.
+
+LICENCES
+
+notify.pl is under GPL (because I copy/pasted it from some guy whose name is inside that code)
+everything else is WTFPL (because I don't care what you do with it, but if you don't 
+tell me you've upgraded it, you're a moron)
+
