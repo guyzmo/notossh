@@ -8,6 +8,7 @@
 use strict;
 use Irssi;
 use vars qw($VERSION %IRSSI);
+#use IO::Socket;
 
 $VERSION = "0.01";
 %IRSSI = (
@@ -18,6 +19,16 @@ $VERSION = "0.01";
     license     => 'GNU General Public License',
     url         => 'http://lewk.org/log/code/irssi-notify',
 );
+
+sub send_notification {
+#    $remote = IO::Socket::INET->new(
+#                        Proto    => "tcp",
+#                        PeerAddr => "localhost",
+#                        PeerPort => "4222",
+#                    )
+#                  or die "cannot connect to daytime port at localhost";
+#   # ... write notifications to the socket ... #
+#}
 
 sub notify {
     my ($server, $summary, $message) = @_;
