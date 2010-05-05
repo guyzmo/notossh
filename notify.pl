@@ -8,45 +8,29 @@
 use strict;
 use Irssi;
 use vars qw($VERSION %IRSSI);
-#use IO::Socket;
+use IO::Socket;
 
-$VERSION = "0.01";
+$VERSION = "0.2";
 %IRSSI = (
-    authors     => 'Luke Macken, Paul W. Frields',
-    contact     => 'lewk@csh.rit.edu, stickster@gmail.com',
+    authors     => 'Bernard `Guyzmo` Pratz, Luke Macken, Paul W. Frields',
+    contact     => 'guyzmo AT m0g DOT net, lewk@csh.rit.edu, stickster@gmail.com',
     name        => 'notify.pl',
-    description => 'Use libnotify to alert user to hilighted messages',
+    description => 'Use libnotify over SSH to alert user for hilighted messages',
     license     => 'GNU General Public License',
-    url         => 'http://lewk.org/log/code/irssi-notify',
+    url         => 'http://github.com/guyzmo/irssi-over-ssh-notifications',
 );
-
-sub send_notification {
-#    $remote = IO::Socket::INET->new(
-#                        Proto    => "tcp",
-#                        PeerAddr => "localhost",
-#                        PeerPort => "4222",
-#                    )
-#                  or die "cannot connect to daytime port at localhost";
-#   # ... write notifications to the socket ... #
-#}
 
 sub notify {
     my ($server, $summary, $message) = @_;
 
-    # Make the message entity-safe
-    $message =~ s/&/&amp;/g; # That could have been done better.
-    $message =~ s/</&lt;/g;
-    $message =~ s/>/&gt;/g;
-    $message =~ s/'/&apos;/g;
-    $summary =~ s/&/&amp;/g; # That could have been done better.
-    $summary =~ s/</&lt;/g;
-    $summary =~ s/>/&gt;/g;
-    $summary =~ s/'/&apos;/g;
-
-    my $cmd = "EXEC - notify-send " .
-	$summary . ": '" . $message . "'";
-
-    $server->command($cmd);
+    my $remote = IO::Socket::INET->new(
+                        Proto    => "tcp",
+                        PeerAddr => "localhost",
+                        PeerPort => "4222",
+                    )
+                  or die "cannot connect to 4222 port at localhost";
+    # ... write notifications to the socket ... #
+	print $remote $summary . ": '" . $message . "'\n";
 }
  
 sub print_text_notify {
