@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
     # check for help
     if len(sys.argv) == 2 and sys.argv[1] in ('-h', '--help') or len(sys.argv) > 2 :
-        print '''Usage: %s [-s||-f|-h]
+        print '''Usage: %s [-s|-f|-h]
 Usage: %s [--stop|--foreground|--help]
 
 Running with no argument or one wrong argument, will still launch the daemon.
@@ -107,7 +107,7 @@ Only one argument is expected. More will give you that help message.
     -s|--stop           stop the running daemon
     -f|--foreground     executes in foreground (and outputs all notifications to stdout)
     -h|--help           this help message
-''' % sys.argv[0]
+''' % (sys.argv[0], sys.argv[0])
         sys.exit(0)
 
     # check for -stop
