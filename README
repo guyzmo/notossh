@@ -6,6 +6,7 @@ systems.
 
  * http://m0g.net/irssi_ssh_notifier/
  * http://github.com/guyzmo/irssi-over-ssh-notifications
+ * http://i.got.nothing.to/post/2010/06/21/On-screen-notifications-from-IRSSI-over-SSH
 
 for original notify.pl code :
 
@@ -39,6 +40,15 @@ irssi-notify-listener.py --help         displays help
 
 Some variables can be changed, Use The Source, Luke. (host and port)
 That code is aimed to be hacked.
+
+CONFIGURATION
+
+add to your .ssh/config those lines, where HOST is the host you want to connect to :
+
+Host HOST
+PermitLocalCommand yes
+LocalCommand /path/to/bin/irssi-notify-listener.py
+RemoteForward 4222 localhost:4222
 
 LICENCES
 
