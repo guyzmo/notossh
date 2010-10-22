@@ -752,7 +752,7 @@ __UPDATED__     = '''Last update: Wed May 05 15:27:48 CEST 2010
                   '''
 
 NOTIFIER_GROWL = '/usr/local/bin/growlnotify'
-NOTIFIER_DBUS  = '/usr/bin/notify'
+NOTIFIER_DBUS  = '/usr/bin/notify-send'
 HOST = 'localhost'
 PORT = 4222
 
