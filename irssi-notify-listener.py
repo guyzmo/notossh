@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+# Here is an base64-encoded icon data (irssi.icns) for use within Growl
 _ICON_DATA_="""aWNucwAAmgVpY3MjAAAASAAAB+Af+D/8f/7//////////3/+f/wf+B/gfABwAAAAAAAH4B/4
 P/x//v//////////f/5//B/4H+B8AHAAAABpczMyAAAB/ZEAB9Stko6NkcDUgwAD167E9IH/
 A/O/qcyAAAHKuof/BKnSANa3if8DpLav/oj/A/zxtaeI/wb++fuqpP/+hv8H/ffympz5/f2E
@@ -807,20 +808,23 @@ def createDaemon():
    os.dup2(0, 2)			# standard error (2)
    return(0)
 
+# decode the icon put at begining of the script
 def write_icon(file, data):
     f = open(file, "w")
     f.write(base64.b64decode(data))
     f.close()
 
+# define the command used with darwin systems
 def notify_growl(args):
     args = args.split(':')
     return [NOTIFIER_GROWL, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
 
+# define the command used with linux systems
 def notify_dbus(args):
     args = args.split(':')
     return [NOTIFIER_DBUS, '-i', 'gtk-dialog-info', '-t', '5000', ':'.join(args[1:]), args[0]]
 
-# define 'notify' function
+# define 'notify' function depending on running platform (whether it is darwin or linux)
 if sys.platform == 'darwin':
     if not os.path.isfile(NOTIFIER_GROWL):
         print 'Please install Growl and check if growlnotify exists and is correctly set in source'
@@ -888,6 +892,7 @@ Only one argument is expected. More will give you that help message.
     s.listen(1)
     if fg is True: print 'Listening on '+str(HOST)+':'+str(PORT)+'...'
     
+    # daemon main loop
     while True:
         conn, addr = s.accept()
         while 1:
