@@ -52,6 +52,6 @@
       nil)))
 
 (eval-after-load "erc-notify-over-ssh"
-  (lambda ()
+  '(progn
     (add-hook 'erc-text-matched-hook 'erc-notify-if-current-nick-mentioned)
     (add-hook 'erc-server-PRIVMSG-functions 'erc-notify-me-of-private-message))
