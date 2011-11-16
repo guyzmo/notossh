@@ -772,7 +772,7 @@ def createDaemon():
    """Detach a process from the controlling terminal and run it in the
    background as a daemon.
    """
-   
+
    try:
       pid = os.fork()
    except OSError, e:
@@ -821,8 +821,14 @@ def notify_growl(args):
 
 # define the command used with linux systems
 def notify_dbus(args):
-    args = args.split(':')
-    return [NOTIFIER_DBUS, '-i', 'gtk-dialog-info', '-t', '5000', ':'.join(args[1:]), args[0]]
+    args = args.split('|')
+    case = { 1 : lambda xs: [NOTIFIER_DBUS, '-i', 'gtk-dialog-info', '-t', '5000', 'notification from remote host', xs[0]],
+             2 : lambda xs: [NOTIFIER_DBUS, '-i', 'gtk-dialog-info', '-t', '5000'] + xs[0].split(' ') + ['notification from remote host', xs[1]],
+             3 : lambda xs: filter(None,[NOTIFIER_DBUS, '-i', 'gtk-dialog-info', '-t', '5000'] + xs[0].split(' ') + [xs[1], '|'.join(xs[2:])]) }
+    if len(args)>3:
+       return case[3](args)
+    else:
+       return case[len(args)](args)
 
 # define 'notify' function depending on running platform (whether it is darwin or linux)
 if sys.platform == 'darwin':
@@ -876,7 +882,7 @@ Only one argument is expected. More will give you that help message.
     if os.path.isfile(PID_FILE):
         print 'Daemon is already running... Exiting.'
         sys.exit(1)
-    
+
     if not (len(sys.argv) == 2 and sys.argv[1] in ('-f', '--foreground')):
         print 'Starting server as daemon...'
         retCode = createDaemon()
@@ -891,7 +897,7 @@ Only one argument is expected. More will give you that help message.
     s.bind((HOST, PORT))
     s.listen(1)
     if fg is True: print 'Listening on '+str(HOST)+':'+str(PORT)+'...'
-    
+
     # daemon main loop
     while True:
         conn, addr = s.accept()
