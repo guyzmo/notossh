@@ -828,7 +828,7 @@ def notify_growl(args):
 # define the command used with linux systems
 def notify_dbus(args):
     args = args.split(':')
-    return [NOTIFIER_DBUS, '-i', 'gtk-dialog-info', '-t', '5000', ':'.join(args[1:]), args[0]]
+    return [NOTIFIER_DBUS, '-i', 'dialog-information', '-t', '5000', ':'.join(args[1:]), args[0]]
 
 # define 'notify' function depending on running platform (whether it is darwin or linux)
 if sys.platform == 'darwin':
