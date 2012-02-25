@@ -740,6 +740,7 @@ import sys
 import os
 import os.path
 import base64
+import signal
 
 __AUTHOR__      = 'Bernard `Guyzmo` Pratz'
 __CONTACT__     = 'guyzmo AT m0g DOT net'
@@ -807,6 +808,11 @@ def createDaemon():
    os.dup2(0, 1)			# standard output (1)
    os.dup2(0, 2)			# standard error (2)
    return(0)
+
+def shutdownDaemon(signum, stack):
+    """Remove the PID file and exit with return code 1"""
+    os.unlink(PID_FILE)
+    sys.exit(1)
 
 # decode the icon put at begining of the script
 def write_icon(file, data):
@@ -876,7 +882,10 @@ Only one argument is expected. More will give you that help message.
     if os.path.isfile(PID_FILE):
         print 'Daemon is already running... Exiting.'
         sys.exit(1)
-    
+
+    # Shutdown if the process is killed
+    signal.signal(signal.SIGTERM, shutdownDaemon)
+
     if not (len(sys.argv) == 2 and sys.argv[1] in ('-f', '--foreground')):
         print 'Starting server as daemon...'
         retCode = createDaemon()
