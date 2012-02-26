@@ -742,16 +742,19 @@ import os.path
 import base64
 import signal
 
-__AUTHOR__      = 'Bernard `Guyzmo` Pratz'
-__CONTACT__     = 'guyzmo AT m0g DOT net'
+__author__      = 'Bernard `Guyzmo` Pratz'
+__credits__     = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "Rui Abreu Ferreira"]
+__email__       = 'guyzmo AT m0g DOT net'
+__status__      = "Production"
 
-__NAME__        = 'irssi-notify-listener.py'
-__VERSION__     = 0.2
-__DESCRIPTION__ = 'Use libnotify over SSH to alert user for hilighted messages'
-__LICENSE__     = 'WTF Public License <http://sam.zoy.org/wtfpl/>'
-__URL__         = 'http://github.com/guyzmo/irssi-over-ssh-notifications'
-__UPDATED__     = '''Last update: Wed May 05 15:27:48 CEST 2010
-                  '''
+__name__        = 'irssi-notify-listener.py'
+__version__     = "0.9"
+__maintainer__  = "Bernard `Guyzmo` Pratz"
+__description__ = 'Use libnotify over SSH to alert user for hilighted messages'
+__license__     = 'WTF Public License <http://sam.zoy.org/wtfpl/>'
+__url__         = 'http://github.com/guyzmo/irssi-over-ssh-notifications'
+__updated__     = '''Last update: Sun Feb 26 20:08:42 CEST 2012
+'''
 
 NOTIFIER_GROWL = '/usr/local/bin/growlnotify'
 NOTIFIER_DBUS  = '/usr/bin/notify-send'
