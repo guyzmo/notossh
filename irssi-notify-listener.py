@@ -747,7 +747,7 @@ __credits__     = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "R
 __email__       = 'guyzmo AT m0g DOT net'
 __status__      = "Production"
 
-__name__        = 'irssi-notify-listener.py'
+__NAME__        = 'irssi-notify-listener.py'
 __version__     = "0.9"
 __maintainer__  = "Bernard `Guyzmo` Pratz"
 __description__ = 'Use libnotify over SSH to alert user for hilighted messages'
