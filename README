@@ -50,6 +50,13 @@ PermitLocalCommand yes
 LocalCommand /path/to/bin/irssi-notify-listener.py
 RemoteForward 4222 localhost:4222
 
+NOTIFICATIONS
+
+to change the way notifications behaves, like on Fedora systems, you can change the notification
+line to the following, making it transient :
+
+return [NOTIFIER_DBUS, '--hint', 'int:transient:1', '-i', 'dialog-information', '-t', '5000', ':'.join(args[1:]), args[0]]
+
 LICENCES
 
 notify.pl is under GPL (because I copy/pasted it from some guy whose name is inside that code)
