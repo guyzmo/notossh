@@ -25,8 +25,8 @@ sub notify {
 
     my $remote = IO::Socket::INET->new(
                         Proto    => "tcp",
-                        PeerAddr => "localhost",
-                        PeerPort => "4222",
+                        PeerAddr => Irssi::settings_get_str('notify-listener_host'),
+                        PeerPort => Irssi::settings_get_int('notify-listener_port'),
                     )
                   or do {
 			print("notify.pl: cannot connect to notification daemon");
@@ -64,6 +64,11 @@ sub dcc_request_notify {
     notify($server, "DCC ".$dcc->{type}." request", $dcc->{nick});
 }
 
+# Register settings
+Irssi::settings_add_int('misc', 'notify-listener_port', 4222);
+Irssi::settings_add_str('misc', 'notify-listener_host', 'localhost');
+
+# Register signals
 Irssi::signal_add('print text', 'print_text_notify');
 Irssi::signal_add('message private', 'message_private_notify');
 Irssi::signal_add('dcc request', 'dcc_request_notify');
