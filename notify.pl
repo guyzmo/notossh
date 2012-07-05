@@ -28,7 +28,10 @@ sub notify {
                         PeerAddr => "localhost",
                         PeerPort => "4222",
                     )
-                  or die "cannot connect to 4222 port at localhost";
+                  or do {
+			print("notify.pl: cannot connect to notification daemon");
+			return;
+			};
     # ... write notifications to the socket ... #
 	print $remote $summary . ": '" . $message . "'\n";
 }
