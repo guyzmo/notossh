@@ -4,7 +4,7 @@ that code is a quick and dirty hack to get notifications over ssh from my server
 running irssi to my workstation. Aimed to be extended with other notification
 systems.
 
- * http://m0g.net/irssi_ssh_notifier/
+ * http://m0g.net/irssi_ssh_notifier/ <-- Seems to be dead - Cooper 20120112
  * http://github.com/guyzmo/irssi-over-ssh-notifications
  * http://i.got.nothing.to/post/2010/06/21/On-screen-notifications-from-IRSSI-over-SSH
 
@@ -14,26 +14,37 @@ for original notify.pl code :
 
 INSTALL
 
-1/ copy 'irssi-notify-listener.py' on your client system (i.e. where you've got 
-    your GUI and want the notifications to be shown)
-2/ copy 'notify.pl' to your ~/.irssi/scripts folder
-3/ be sure irssi-notify-listener.py is chmod +x
-4/ launch irssi-notify-listener.py on your client system
-5/ from your client system do ssh user@myserver -R 4222:localhost:4222 (it can also 
-    be set in ssh_config, RTFM)
-6/ do '/load perl' and '/script load notify.pl' in irssi
-7/ configure the 'highlights' in your client. (if you don't know how RTFM !)
-8/ if you don't like it as is... HACK IT !
+-- REMOTE SHELL running IRSSI --
+1/	copy 'notify.pl' to your ~/.irssi/scripts folder
+	i.e. scp notify.pl REMOTE:.irssi/scripts
+2/	do '/load perl' and '/script load notify.pl' in irssi
+	- TIP: Add it to your irssi conf to auto load
+	e.g.
+3/	Ensure SSH allows remote tunnels - i.e. GatewayPorts yes
+4/	configure the 'highlights' in your client. (if you don't know how RTFM !)
+	- /hilight -regex bla|bla
+
+-- Local SSH Client --
+1/ 	cd irssi-over-ssh-notifications
+2/	Edit irssi-over-ssh-notifications.sh to have correct SSH server, port, BASE dir for scripts 
+	(e.g. dir in PATH) etc.
+3/ 	./irssi-over-ssh-notifications.sh install - Will copy to BASE in script
+4/	OPTIONAL: Add CONFIGURATION from below to automate things ... 
+5/	irssi-over-ssh-notifications.sh startall
+		- irssi-over-ssh-notifications.sh stop (will turn off daemon AND ssh tunnel)
+6/	if you don't like it as is... HACK IT !
 
 TODO
 
  * test it with libnotify (only tested with growl for now)
+	- Growl can pass through to libnotify
  * test every kind of output. 
  * Make it easier to format output.
 
 OPTIONS
 
 irssi-notify-listener.py                starts the server as daemon
+irssi-notify-listener.py --sticky       make Growl notifications sticky
 irssi-notify-listener.py --stop         stops the running daemon
 irssi-notify-listener.py --foreground   runs the server in foreground
 irssi-notify-listener.py --help         displays help
@@ -65,5 +76,10 @@ tell me you've upgraded it, you're just a moron)
 
 And if you like it, buy me a beer ! 
 Mail-me on guyzmo at m0g dot net.
+
+####
+Cooper Lees Fork
+me@cooperlees.com - 20130112
+###
 
 EOF

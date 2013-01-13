@@ -893,6 +893,7 @@ __updated__     = '''Last update: Tue Oct 9 10:54:42 PST 2012
 '''
 
 NOTIFIER_GROWL = '/usr/local/bin/growlnotify'
+STICKY = False
 NOTIFIER_DBUS  = '/usr/bin/notify-send'
 HOST = 'localhost'
 PORT = 4222
@@ -962,7 +963,11 @@ def write_icon(file, data):
 # define the command used with darwin systems
 def notify_growl(args):
     args = args.split(':')
-    return [NOTIFIER_GROWL, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+#   Cooper: Optional sticky
+    if STICKY is True:
+       return [NOTIFIER_GROWL, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+    else:
+       return [NOTIFIER_GROWL, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
 
 # define the command used with linux systems
 def notify_dbus(args):
@@ -997,6 +1002,7 @@ Running with no argument or one wrong argument, will still launch the daemon.
 Only one argument is expected. More will give you that help message.
 
     -s|--stop           stop the running daemon
+    -S|--sticky         make Growl notification 'sticky' (don't auto dissapear)
     -f|--foreground     executes in foreground (and outputs all notifications to stdout)
     -h|--help           this help message
 ''' % (sys.argv[0], sys.argv[0])
@@ -1035,6 +1041,12 @@ Only one argument is expected. More will give you that help message.
     else:
         fg = True
         print 'Starting server in foreground mode...'
+
+    # Cooper: Edit to allow sitcky / non-sticky growl notifications - Can tweak this in growl program
+    if len(sys.argv) == 2 and sys.argv[1] in ('-S', '--sticky'):
+	if fg == True:
+		print '--> Sticky node for growl notifications'
+	STICKY = True
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
