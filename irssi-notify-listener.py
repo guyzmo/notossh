@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 # Here is an base64-encoded icon data (irssi.icns) for use within Growl
-_ICON_DATA_="""aWNucwAAmgVpY3MjAAAASAAAB+Af+D/8f/7//////////3/+f/wf+B/gfABwAAAAAAAH4B/4
+_ICON_DATA_ = """\
+aWNucwAAmgVpY3MjAAAASAAAB+Af+D/8f/7//////////3/+f/wf+B/gfABwAAAAAAAH4B/4
 P/x//v//////////f/5//B/4H+B8AHAAAABpczMyAAAB/ZEAB9Stko6NkcDUgwAD167E9IH/
 A/O/qcyAAAHKuof/BKnSANa3if8DpLav/oj/A/zxtaeI/wb++fuqpP/+hv8H/ffympz5/f2E
 /wf9+fLRn9WP/4H+F/39/Pr28ul02ACvhvH9+/r49vb599FruYAAC86N//j46urgvHhmyIEA
@@ -870,89 +871,81 @@ csPUJEJwAnAVSfm+uz82Azc08iQDgJOBGc5uh2s3NPIlT0uXgZg3rzc0888cQTTzyJLPl/tTG818Sq
 uyQAAAAASUVORK5CYII="""
 
 # Echo server program
-import socket
-import shlex, subprocess
-import sys
 import os
-import os.path
+import sys
+import socket
 import base64
 import signal
+import os.path
+import argparse
+import tempfile
+import subprocess
 
-__author__      = 'Bernard `Guyzmo` Pratz'
-__credits__     = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "Rui Abreu Ferreira"]
-__email__       = 'guyzmo AT m0g DOT net'
-__status__      = "Production"
+__author__ = 'Bernard `Guyzmo` Pratz'
+__credits__ = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "Rui Abreu Ferreira", "Cooper Ry Lees"]
+__email__ = 'guyzmo AT m0g DOT net'
+__status__ = "Production"
 
-__NAME__        = 'irssi-notify-listener.py'
-__version__     = "0.9"
-__maintainer__  = "Bernard `Guyzmo` Pratz"
+__NAME__ = 'irssi-notify-listener.py'
+__version__ = "1.0"
+__maintainer__ = "Bernard `Guyzmo` Pratz"
 __description__ = 'Use libnotify over SSH to alert user for hilighted messages'
-__license__     = 'WTF Public License <http://sam.zoy.org/wtfpl/>'
-__url__         = 'http://github.com/guyzmo/irssi-over-ssh-notifications'
-__updated__     = '''Last update: Tue Oct 9 10:54:42 PST 2012
+__license__ = 'WTF Public License <http://sam.zoy.org/wtfpl/>'
+__url__ = 'http://github.com/guyzmo/irssi-over-ssh-notifications'
+__updated__ = '''Last update: Mon Jan 14 19:28:43 CET 2013
 '''
 
-NOTIFIER_GROWL = '/usr/local/bin/growlnotify'
-STICKY = False
-NOTIFIER_DBUS  = '/usr/bin/notify-send'
-HOST = 'localhost'
-PORT = 4222
-
-# Daemonization
-PID_FILE = "/tmp/irssi-notify-listener.pid"
-UMASK = 766
-WORKDIR='/tmp/'
-MAXFD=1024
-
 if (hasattr(os, "devnull")):
-   REDIRECT_TO = os.devnull
+    REDIRECT_TO = os.devnull
 else:
-   REDIRECT_TO = "/dev/null"
+    REDIRECT_TO = "/dev/null"
+
 
 def createDaemon():
-   """Detach a process from the controlling terminal and run it in the
-   background as a daemon.
-   """
-   
-   try:
-      pid = os.fork()
-   except OSError, e:
-      raise Exception, "%s [%d]" % (e.strerror, e.errno)
-   if (pid == 0):	# The first child.
-      os.setsid()
-      try:
-         pid = os.fork()	# Fork a second child.
-      except OSError, e:
-         raise Exception, "%s [%d]" % (e.strerror, e.errno)
-      if (pid == 0):	# The second child.
-         os.chdir(WORKDIR)
-         os.umask(UMASK)
-      else:
-         os._exit(0)	# Exit parent (the first child) of the second child.
-   else:
-      os._exit(0)	# Exit parent of the first child.
-   import resource		# Resource usage information.
-   maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]
-   if (maxfd == resource.RLIM_INFINITY):
-      maxfd = MAXFD
-   # Iterate through and close all file descriptors.
-   for fd in range(0, maxfd):
-      try:
-         os.close(fd)
-      except OSError:	# ERROR, fd wasn't open to begin with (ignored)
-         pass
-   # This call to open is guaranteed to return the lowest file descriptor,
-   # which will be 0 (stdin), since it was closed above.
-   os.open(REDIRECT_TO, os.O_RDWR)	# standard input (0)
-   # Duplicate standard input to standard output and standard error.
-   os.dup2(0, 1)			# standard output (1)
-   os.dup2(0, 2)			# standard error (2)
-   return(0)
+    """Detach a process from the controlling terminal and run it in the
+    background as a daemon.
+    """
+    try:
+        pid = os.fork()
+    except OSError, e:
+        raise Exception("%s [%d]" % (e.strerror, e.errno))
+    if (pid == 0):  # The first child.
+        os.setsid()
+        try:
+            pid = os.fork()  # Fork a second child.
+        except OSError, e:
+            raise Exception("%s [%d]" % (e.strerror, e.errno))
+        if (pid == 0):  # The second child.
+            os.chdir(WORKDIR)
+            os.umask(UMASK)
+        else:
+            os._exit(0)  # Exit parent (the first child) of the second child.
+    else:
+        os._exit(0)  # Exit parent of the first child.
+    import resource  # Resource usage information.
+    maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]
+    if (maxfd == resource.RLIM_INFINITY):
+        maxfd = MAXFD
+    # Iterate through and close all file descriptors.
+    for fd in range(0, maxfd):
+        try:
+            os.close(fd)
+        except OSError:  # ERROR, fd wasn't open to begin with (ignored)
+            pass
+    # This call to open is guaranteed to return the lowest file descriptor,
+    # which will be 0 (stdin), since it was closed above.
+    os.open(REDIRECT_TO, os.O_RDWR)  # standard input (0)
+    # Duplicate standard input to standard output and standard error.
+    os.dup2(0, 1)  # standard output (1)
+    os.dup2(0, 2)  # standard error (2)
+    return(0)
+
 
 def shutdownDaemon(signum, stack):
     """Remove the PID file and exit with return code 1"""
     os.unlink(PID_FILE)
     sys.exit(1)
+
 
 # decode the icon put at begining of the script
 def write_icon(file, data):
@@ -960,71 +953,41 @@ def write_icon(file, data):
     f.write(base64.b64decode(data))
     f.close()
 
+
 # define the command used with darwin systems
 def notify_growl(args):
     args = args.split(':')
-#   Cooper: Optional sticky
-    if STICKY is True:
-       return [NOTIFIER_GROWL, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+    if args.sticky is True:
+        return [args.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
     else:
-       return [NOTIFIER_GROWL, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+        return [args.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+
 
 # define the command used with linux systems
 def notify_dbus(args):
     args = args.split(':')
-    return [NOTIFIER_DBUS, '-i', '/tmp/irssi.png', '-t', '5000', ':'.join(args[1:]), args[0]]
+    return [args.notify, '-i', '/tmp/irssi.png', '-t', '5000', ':'.join(args[1:]), args[0]]
 
-# define 'notify' function depending on running platform (whether it is darwin or linux)
-if sys.platform == 'darwin':
-    if not os.path.isfile(NOTIFIER_GROWL):
-        print 'Please install Growl and check if growlnotify exists and is correctly set in source'
-        sys.exit(1)
-    notify = notify_growl
-    write_icon("/tmp/irssi.icns", _ICON_DATA_)
-elif sys.platform == 'linux2':
-    if not os.path.isfile(NOTIFIER_DBUS):
-        print 'Please install libnotify and check if the notify command exists and is correctly set in source'
-        sys.exit(1)
-    notify = notify_dbus
-    write_icon("/tmp/irssi.png", _PNG_DATA_)
 
-if __name__ == '__main__':
-    fg = False
-
-    ### check arguments
-
-    # check for help
-    if len(sys.argv) == 2 and sys.argv[1] in ('-h', '--help') or len(sys.argv) > 2 :
-        print '''Usage: %s [-s|-f|-h]
-Usage: %s [--stop|--foreground|--help]
-
-Running with no argument or one wrong argument, will still launch the daemon.
-Only one argument is expected. More will give you that help message.
-
-    -s|--stop           stop the running daemon
-    -S|--sticky         make Growl notification 'sticky' (don't auto dissapear)
-    -f|--foreground     executes in foreground (and outputs all notifications to stdout)
-    -h|--help           this help message
-''' % (sys.argv[0], sys.argv[0])
-        sys.exit(0)
-
-    # check for -stop
-    if len(sys.argv) == 2 and sys.argv[1] in ('--stop', '-s'):
-        if not os.path.isfile(PID_FILE):
-            print 'nothing to stop. exiting...'
+def init(args):
+    # define 'notify' function depending on running platform (whether it is darwin or linux)
+    if sys.platform == 'darwin':
+        if not os.path.isfile(args.growl):
+            print 'Please install Growl and check if growlnotify exists and is correctly set in source'
             sys.exit(1)
-        try:
-            os.kill(int(open(PID_FILE, 'r').read()), 9)
-        except ValueError, ve:
-            print 'Invalid PID file. exiting...'
+        notify = notify_growl
+        write_icon(os.path.join(WORKDIR, "irssi.icns"), _ICON_DATA_)
+    elif sys.platform == 'linux2':
+        if not os.path.isfile(args.notify):
+            print 'Please install libnotify and check if the notify command exists and is correctly set in source'
             sys.exit(1)
-        except OSError, oe:
-            print 'Invalid PID: %s. Process has already exited. exiting...' % int(open(PID_FILE, 'r').read())
-            sys.exit(1)
-        os.unlink(PID_FILE)
-        print 'notify daemon killed'
-        sys.exit(0)
+        notify = notify_dbus
+        write_icon(os.path.join(WORKDIR, "irssi.png"), _PNG_DATA_)
+    return notify
 
+
+def service_start(args):
+    notify = init(args)
     if os.path.isfile(PID_FILE):
         print 'Daemon is already running... Exiting.'
         sys.exit(1)
@@ -1032,37 +995,113 @@ Only one argument is expected. More will give you that help message.
     # Shutdown if the process is killed
     signal.signal(signal.SIGTERM, shutdownDaemon)
 
-    if not (len(sys.argv) == 2 and sys.argv[1] in ('-f', '--foreground')):
-        print 'Starting server as daemon...'
+    if not args.foreground:
+        if args.verbose:
+            print 'Starting server as daemon...'
         retCode = createDaemon()
 
         # create PID file
-        f = open(PID_FILE, 'w').write(str(os.getpid()))
+        with open(PID_FILE, 'w') as f:
+            f.write(str(os.getpid()))
     else:
-        fg = True
         print 'Starting server in foreground mode...'
 
-    # Cooper: Edit to allow sitcky / non-sticky growl notifications - Can tweak this in growl program
-    if len(sys.argv) == 2 and sys.argv[1] in ('-S', '--sticky'):
-	if fg == True:
-		print '--> Sticky node for growl notifications'
-	STICKY = True
-
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((HOST, PORT))
+    s.bind((args.host, args.port))
     s.listen(1)
-    if fg is True: print 'Listening on '+str(HOST)+':'+str(PORT)+'...'
-    
+    if args.verbose:
+        print 'Listening on %s:%s...' % (str(args.host), str(args.port))
+
     # daemon main loop
     while True:
         conn, addr = s.accept()
         while 1:
             data = conn.recv(1024)
-            if not data: break
-            if fg is True: print 'RCPT: '+str(data)
-            p = subprocess.Popen(notify(data))
+            if not data:
+                break
+            if args.verbose:
+                print 'RCPT: %s' % str(data)
+                print 'Calling("%s")' % notify(data)
+            subprocess.Popen(notify(data))
         conn.close()
 
     sys.exit(retCode)
 
 
+def service_stop(args):
+    if not os.path.isfile(PID_FILE):
+        print 'nothing to stop. exiting...'
+        sys.exit(1)
+    try:
+        os.kill(int(open(PID_FILE, 'r').read()), 9)
+    except ValueError:
+        print 'Invalid PID file. exiting...'
+        sys.exit(1)
+    except OSError:
+        print 'Invalid PID: %s. Process has already exited. exiting...' % int(open(PID_FILE, 'r').read())
+        sys.exit(1)
+    os.unlink(PID_FILE)
+    print 'notify daemon killed'
+    sys.exit(0)
+
+# Daemonization
+WORKDIR = tempfile.mkdtemp()
+PID_FILE = os.path.join(WORKDIR, "irssi-notify-listener.pid")
+MAXFD = 1024
+UMASK = 766
+
+
+def start(notify_func=None):
+    parser = argparse.ArgumentParser(prog=sys.argv[0],
+                description="IRSSI Notify Listener",
+                epilog="By %s with patches from %s" % (__author__, ', '.join(__credits__[1:])))
+
+    sp = parser.add_subparsers()
+
+    sp.add_parser('start', help='Starts the service').set_defaults(func=service_start)
+    sp.add_parser('stop', help='Stops the service').set_defaults(func=service_stop)
+
+    parser.add_argument("-f",
+                        "--foreground",
+                        dest="foreground",
+                        action="store_true",
+                        help='Make the notifications stick')
+    parser.add_argument("-S",
+                        "--sticky",
+                        dest="sticky",
+                        action="store_true",
+                        help='Make the notifications stick')
+    parser.add_argument("-V",
+                        "--verbose",
+                        dest="verbose",
+                        action="store_true",
+                        help='Make the listener verbose')
+
+    parser.add_argument('-H', '--host',
+                        dest='host',
+                        action='store',
+                        default='localhost',
+                        help='Host to listen on')
+    parser.add_argument('-P', '--port',
+                        dest='port',
+                        action='store',
+                        default=4222,
+                        type=int,
+                        help='Port to listen on')
+
+    parser.add_argument('-G', '--with-growl',
+                        dest='growl',
+                        action='store',
+                        default='/usr/local/bin/growlnotify',
+                        help='Path to growl executable')
+    parser.add_argument('-N', '--with-notify',
+                        dest='notify',
+                        action='store',
+                        default='/usr/bin/notify-send',
+                        help='Path to notify executable')
+
+    args = parser.parse_known_args()
+    args.func(args)
+
+if __name__ == '__main__':
+    start()
