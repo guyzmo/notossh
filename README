@@ -4,7 +4,7 @@ that code is a quick and dirty hack to get notifications over ssh from my server
 running irssi to my workstation. Aimed to be extended with other notification
 systems.
 
- * http://m0g.net/irssi_ssh_notifier/ <-- Seems to be dead - Cooper 20120112
+ * http://m0g.net/irssi_ssh_notifier/
  * http://github.com/guyzmo/irssi-over-ssh-notifications
  * http://i.got.nothing.to/post/2010/06/21/On-screen-notifications-from-IRSSI-over-SSH
 
@@ -15,71 +15,114 @@ for original notify.pl code :
 INSTALL
 
 -- REMOTE SHELL running IRSSI --
-1/	copy 'notify.pl' to your ~/.irssi/scripts folder
-	i.e. scp notify.pl REMOTE:.irssi/scripts
-2/	do '/load perl' and '/script load notify.pl' in irssi
-	- TIP: Add it to your irssi conf to auto load
-	e.g.
-3/	Ensure SSH allows remote tunnels - i.e. GatewayPorts yes
-4/	configure the 'highlights' in your client. (if you don't know how RTFM !)
-	- /hilight -regex bla|bla
+1/  copy 'notify.pl' to your ~/.irssi/scripts folder
+    i.e. scp notify.pl REMOTE:.irssi/scripts
+2/  do '/load perl' and '/script load notify.pl' in irssi
+    - TIP: Add it to your irssi conf to auto load
+3/  Ensure SSH allows remote tunnels - i.e. GatewayPorts yes
+4/  configure the 'highlights' in your client. (if you don't know how RTFM !)
+    - /hilight -regex bla|bla
 
 -- Local SSH Client --
-1/ 	cd irssi-over-ssh-notifications
-2/	Edit irssi-over-ssh-notifications.sh to have correct SSH server, port, BASE dir for scripts 
-	(e.g. dir in PATH) etc.
-3/ 	./irssi-over-ssh-notifications.sh install - Will copy to BASE in script
-4/	OPTIONAL: Add CONFIGURATION from below to automate things ... 
-5/	irssi-over-ssh-notifications.sh startall
-		- irssi-over-ssh-notifications.sh stop (will turn off daemon AND ssh tunnel)
-6/	if you don't like it as is... HACK IT !
-
-TODO
-
- * test it with libnotify (only tested with growl for now)
-	- Growl can pass through to libnotify
- * test every kind of output. 
- * Make it easier to format output.
+1/  cd irssi-over-ssh-notifications
+2/  Edit irssi-over-ssh-notifications.sh to have correct SSH server, port, BASE dir for scripts 
+    (e.g. dir in PATH) etc.
+3/  ./irssi-over-ssh-notifications.sh install - Will copy to BASE in script
+4/  OPTIONAL: Add CONFIGURATION from below to automate things ... 
+5/  irssi-over-ssh-notifications.sh startall
+        - irssi-over-ssh-notifications.sh stop (will turn off daemon AND ssh tunnel)
+6/  if you don't like it as is... HACK IT !
 
 OPTIONS
 
-irssi-notify-listener.py                starts the server as daemon
-irssi-notify-listener.py --sticky       make Growl notifications sticky
-irssi-notify-listener.py --stop         stops the running daemon
-irssi-notify-listener.py --foreground   runs the server in foreground
-irssi-notify-listener.py --help         displays help
+    usage: irssi-notify-listener.py [-h] [-f] [-S] [-V] [-H HOST] [-P PORT]
+                                    [-G GROWL] [-N NOTIFY]
+                                    {start,stop} ...
 
-Some variables can be changed, Use The Source, Luke. (host and port)
-That code is aimed to be hacked.
+    IRSSI Notify Listener
+
+    positional arguments:
+    {start,stop}
+        start               Starts the service
+        stop                Stops the service
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    -f, --foreground      Make the notifications stick
+    -S, --sticky          Make the notifications stick
+    -V, --verbose         Make the listener verbose
+    -H HOST, --host HOST  Host to listen on
+    -P PORT, --port PORT  Port to listen on
+    -G GROWL, --with-growl GROWL
+                            Path to growl executable
+    -N NOTIFY, --with-notify NOTIFY
+                            Path to notify executable
 
 CONFIGURATION
 
-add to your .ssh/config those lines, where HOST is the host you want to connect to :
+add to your .ssh/config those lines, where HOST is the host and port the PORT you want
+to connect to :
 
-Host HOST
-PermitLocalCommand yes
-LocalCommand /path/to/bin/irssi-notify-listener.py
-RemoteForward 4222 localhost:4222
+    Host HOST
+    PermitLocalCommand yes
+    LocalCommand /path/to/bin/irssi-notify-listener.py
+    RemoteForward PORT localhost:PORT
 
 NOTIFICATIONS
 
 to change the way notifications behaves, like on Fedora systems, you can change the notification
 line to the following, making it transient :
 
-return [NOTIFIER_DBUS, '--hint', 'int:transient:1', '-i', 'dialog-information', '-t', '5000', ':'.join(args[1:]), args[0]]
+    return [args.notify, '--hint', 'int:transient:1', '-i', 'dialog-information', '-t', '5000', ':'.join(args[1:]), args[0]]
+
+TODO
+
+ * enable passing through the arguments after -- to the notification service
 
 LICENCES
 
-notify.pl is under GPL (because I copy/pasted it from some guy whose name is inside that code)
+Since 2010, that code is aimed to be hacked.
+Thanks to Charles `doublerebel` Philips, Rui Abreu Ferreira and Cooper Ry Lees for their hacks!
+
+notify.pl is under GPL (because I copy/pasted it from Luke Macken and Paul W. Frields)
+
 everything else is WTFPL (because I don't care what you do with it, but if you don't 
-tell me you've upgraded it, you're just a moron)
+tell me you've improved it it, you're just a moron)
 
 And if you like it, buy me a beer ! 
+
+By Bernard `Guyzmo` Pratz
 Mail-me on guyzmo at m0g dot net.
 
-####
-Cooper Lees Fork
-me@cooperlees.com - 20130112
-###
+WTFPL
+
+        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+                    Version 2, December 2004 
+
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
+
+ Everyone is permitted to copy and distribute verbatim or modified 
+ copies of this license document, and changing it is allowed as long 
+ as the name is changed. 
+
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+
+GPLv2
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 EOF
