@@ -987,6 +987,7 @@ def init(args):
 
 
 def service_start(args):
+    args, left_args = args
     notify = init(args)
     if os.path.isfile(PID_FILE):
         print 'Daemon is already running... Exiting.'
@@ -1029,6 +1030,7 @@ def service_start(args):
 
 
 def service_stop(args):
+    args, left_args = args
     if not os.path.isfile(PID_FILE):
         print 'nothing to stop. exiting...'
         sys.exit(1)
@@ -1046,7 +1048,7 @@ def service_stop(args):
 
 # Daemonization
 WORKDIR = tempfile.mkdtemp()
-PID_FILE = os.path.join(WORKDIR, "irssi-notify-listener.pid")
+PID_FILE = "/tmp/irssi-notify-listener.pid"
 MAXFD = 1024
 UMASK = 766
 
@@ -1101,7 +1103,7 @@ def start(notify_func=None):
                         help='Path to notify executable')
 
     args = parser.parse_known_args()
-    args.func(args)
+    args[0].func(args)
 
 if __name__ == '__main__':
     start()
