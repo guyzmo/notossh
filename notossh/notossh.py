@@ -955,18 +955,18 @@ def write_icon(file, data):
 
 
 # define the command used with darwin systems
-def notify_growl(args):
+def notify_growl(opts, cmd_opts, args):
     args = args.split(':')
-    if args.sticky is True:
-        return [args.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+    if opts.sticky is True:
+        return [opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
     else:
-        return [args.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+        return [opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
 
 
 # define the command used with linux systems
-def notify_dbus(args):
+def notify_dbus(opts, cmd_opts, args):
     args = args.split(':')
-    return [args.notify, '-i', '/tmp/irssi.png', '-t', '5000', ':'.join(args[1:]), args[0]]
+    return [opts.notify, '-i', '/tmp/irssi.png', '-t', '5000', ':'.join(args[1:]), args[0]]
 
 
 def init(args):
@@ -1022,8 +1022,8 @@ def service_start(args):
                 break
             if args.verbose:
                 print 'RCPT: %s' % str(data)
-                print 'Calling("%s")' % notify(data)
-            subprocess.Popen(notify(data))
+                print 'Calling("%s")' % notify(args, left_args, data)
+            subprocess.Popen(notify(args, left_args, data))
         conn.close()
 
     sys.exit(retCode)
@@ -1041,6 +1041,7 @@ def service_stop(args):
         sys.exit(1)
     except OSError:
         print 'Invalid PID: %s. Process has already exited. exiting...' % int(open(PID_FILE, 'r').read())
+        os.unlink(PID_FILE)
         sys.exit(1)
     os.unlink(PID_FILE)
     print 'notify daemon killed'
