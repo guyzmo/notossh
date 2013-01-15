@@ -89,7 +89,6 @@ line to the following, making it transient :
 TODO
 ====
 
- * finish to write the setup.py script
  * enable passing through the arguments after -- to the notification service
 
 LICENCES
