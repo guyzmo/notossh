@@ -6,8 +6,8 @@ running irssi to my workstation. Aimed to be extended with other notification
 systems.
 
  * http://m0g.net/notossh/
- * http://github.com/guyzmo/irssi-over-ssh-notifications
- * http://i.got.nothing.to/post/2010/06/21/On-screen-notifications-from-IRSSI-over-SSH
+ * http://github.com/guyzmo/notossh
+ * http://i.got.nothing.to/blog/2010/06/21/on-screen-notifications-from-irssi-over-ssh
 
 for original notify.pl code :
 
