@@ -1,5 +1,6 @@
-from setuptools import setup  # , find_packages
+from distutils.core import setup
 import os
+import sys
 
 
 def read(*names):
@@ -18,17 +19,18 @@ long_description = """
 
 """ % read('README')
 
-setup(name='tunneled_notify_service',
+setup(name='notossh',
       version='1.0',
-      description="Tunneled notification service",
+      description="NOTifications Over SSH",
       long_description=long_description,
-      classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=["Environment :: Console",
+                   ""],
       keywords='',
       author='Bernard `Guyzmo` Pratz',
-      author_email='guyzmo@m0g.net',
-      url='http://i.got.nothing.to/blog',
+      author_email='notossh@m0g.net',
+      url='http://m0g.net/notossh/',
       license='WTFPL',
-      #packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      packages=['notossh'],
       zip_safe=False,
       install_requires=[
           'argparse',
@@ -37,6 +39,22 @@ setup(name='tunneled_notify_service',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      notify_service_listener = tunneled_notify_service:start
+      notossh = notossh.notossh:start
       """,
       )
+
+if "install" in sys.argv:
+    print """
+Notossh is now installed!
+You can configure how you want to connect to your IRC service:
+
+cat >> ~/.ssh/config <EOF
+    Host HOST
+    PermitLocalCommand yes
+    LocalCommand /path/to/bin/notossh
+    RemoteForward PORT localhost:PORT
+EOF
+
+or simply notossh --help
+
+"""

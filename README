@@ -4,7 +4,7 @@ that code is a quick and dirty hack to get notifications over ssh from my server
 running irssi to my workstation. Aimed to be extended with other notification
 systems.
 
- * http://m0g.net/irssi_ssh_notifier/
+ * http://m0g.net/notossh/
  * http://github.com/guyzmo/irssi-over-ssh-notifications
  * http://i.got.nothing.to/post/2010/06/21/On-screen-notifications-from-IRSSI-over-SSH
 
