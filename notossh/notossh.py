@@ -974,8 +974,10 @@ def notify_growl(opts, cmd_opts, args):
 # define the command used with linux systems
 def notify_dbus(opts, cmd_opts, args):
     args = args.split(':')
-    return subprocess.Popen([opts.notify, '-i', os.path.join(WORKDIR, 'irssi.png'), '-t', '5000', ':'.join(args[1:]), args[0]])
-
+    n = Notify.Notification.new(':'.join(args[1:]), args[0], os.path.join(WORKDIR, 'irssi.png'))
+    n.set_category("im.received")
+    n.show()
+    return 0
 
 def init(args):
     # define 'notify' function depending on running platform (whether it is darwin or linux)
@@ -989,7 +991,9 @@ def init(args):
         if not os.path.isfile(args.notify):
             print 'Please install libnotify and check if the notify command exists and is correctly set in source'
             sys.exit(1)
-        # Notify.init("irssi")
+        if args.verbose:
+            print "Initializing GTK Notify API"
+        Notify.init("irssi")
         notify = notify_dbus
         write_icon(os.path.join(WORKDIR, "irssi.png"), _PNG_DATA_)
     return notify
