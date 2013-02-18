@@ -881,6 +881,10 @@ import argparse
 import tempfile
 import subprocess
 
+# conditionally import freedesktop Notify
+if sys.platform == 'linux2':
+    from gi.repository import Notify
+
 __author__ = 'Bernard `Guyzmo` Pratz'
 __credits__ = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "Rui Abreu Ferreira", "Cooper Ry Lees"]
 __email__ = 'guyzmo AT m0g DOT net'
@@ -981,6 +985,7 @@ def init(args):
         if not os.path.isfile(args.notify):
             print 'Please install libnotify and check if the notify command exists and is correctly set in source'
             sys.exit(1)
+        # Notify.init("irssi")
         notify = notify_dbus
         write_icon(os.path.join(WORKDIR, "irssi.png"), _PNG_DATA_)
     return notify
