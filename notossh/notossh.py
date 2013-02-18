@@ -966,7 +966,7 @@ def notify_growl(opts, cmd_opts, args):
 # define the command used with linux systems
 def notify_dbus(opts, cmd_opts, args):
     args = args.split(':')
-    return [opts.notify, '-i', '/tmp/irssi.png', '-t', '5000', ':'.join(args[1:]), args[0]]
+    return [opts.notify, '-i', os.path.join(WORKDIR, "irssi.png"), '-t', '5000', ':'.join(args[1:]), args[0]]
 
 
 def init(args):
