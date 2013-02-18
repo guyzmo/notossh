@@ -961,16 +961,20 @@ def write_icon(file, data):
 # define the command used with darwin systems
 def notify_growl(opts, cmd_opts, args):
     args = args.split(':')
+
+    growl_command = None
     if opts.sticky is True:
-        return [opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+        growl_command = subprocess.Popen([opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]])
     else:
-        return [opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+        growl_command = subprocess.Popen([opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]])
+
+    return subprocess.Popen(growl_command)
 
 
 # define the command used with linux systems
 def notify_dbus(opts, cmd_opts, args):
     args = args.split(':')
-    return [opts.notify, '-i', os.path.join(WORKDIR, "irssi.png"), '-t', '5000', ':'.join(args[1:]), args[0]]
+    return subprocess.Popen([opts.notify, '-i', os.path.join(WORKDIR, 'irssi.png'), '-t', '5000', ':'.join(args[1:]), args[0]])
 
 
 def init(args):
@@ -1028,7 +1032,7 @@ def service_start(args):
             if args.verbose:
                 print 'RCPT: %s' % str(data)
                 print 'Calling("%s")' % notify(args, left_args, data)
-            subprocess.Popen(notify(args, left_args, data))
+            notify(args, left_args, data)
         conn.close()
 
     sys.exit(retCode)
