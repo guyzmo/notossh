@@ -964,9 +964,9 @@ def notify_growl(opts, cmd_opts, args):
 
     growl_command = None
     if opts.sticky is True:
-        growl_command = subprocess.Popen([opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]])
+        growl_command = [opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
     else:
-        growl_command = subprocess.Popen([opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]])
+        growl_command = [opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
 
     return subprocess.Popen(growl_command)
 
