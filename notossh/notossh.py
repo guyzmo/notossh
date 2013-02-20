@@ -887,17 +887,17 @@ if sys.platform == 'linux2':
     from gi.repository import Notify
 
 __author__ = 'Bernard `Guyzmo` Pratz'
-__credits__ = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "Rui Abreu Ferreira", "Cooper Ry Lees"]
+__credits__ = ["Bernard `Guyzmo` Pratz", "Charles `doublerebel` Philips", "Rui Abreu Ferreira", "Cooper Ry Lees", "Kevin Mershon"]
 __email__ = 'guyzmo AT m0g DOT net'
 __status__ = "Production"
 
 __NAME__ = 'irssi-notify-listener.py'
-__version__ = "1.0"
+__version__ = "1.1"
 __maintainer__ = "Bernard `Guyzmo` Pratz"
 __description__ = 'Use libnotify over SSH to alert user for hilighted messages'
 __license__ = 'WTF Public License <http://sam.zoy.org/wtfpl/>'
 __url__ = 'http://github.com/guyzmo/irssi-over-ssh-notifications'
-__updated__ = '''Last update: Mon Jan 14 19:28:43 CET 2013
+__updated__ = '''Last update: Wed Feb 20 15:43:38 CET 2013
 '''
 
 if (hasattr(os, "devnull")):
