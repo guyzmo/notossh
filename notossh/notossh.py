@@ -882,6 +882,7 @@ import tempfile
 import subprocess
 
 # conditionally import freedesktop Notify
+Notify = None
 if sys.platform == 'linux2':
     from gi.repository import Notify
 
@@ -979,6 +980,12 @@ def notify_dbus(opts, cmd_opts, args):
     n.show()
     return 0
 
+
+def notify_cli(opts, cmd_opts, args):
+    args = args.split(':')
+    return subprocess.Popen([opts.notify, '-i', os.path.join(WORKDIR, 'irssi.png'), '-t', '5000', ':'.join(args[1:]), args[0]])
+
+
 def init(args):
     # define 'notify' function depending on running platform (whether it is darwin or linux)
     if sys.platform == 'darwin':
@@ -988,13 +995,17 @@ def init(args):
         notify = notify_growl
         write_icon(os.path.join(WORKDIR, "irssi.icns"), _ICON_DATA_)
     elif sys.platform == 'linux2':
-        if not os.path.isfile(args.notify):
-            print 'Please install libnotify and check if the notify command exists and is correctly set in source'
-            sys.exit(1)
-        if args.verbose:
-            print "Initializing GTK Notify API"
-        Notify.init("irssi")
-        notify = notify_dbus
+        if Notify:
+            if args.verbose:
+                print "Initializing GTK Notify API"
+            Notify.init("irssi")
+            notify = notify_dbus
+        else:
+            if not os.path.isfile(args.notify):
+                print 'Please install libnotify and check if the notify command exists or give its path. See --help.'
+                sys.exit(1)
+            notify = notify_cli
+
         write_icon(os.path.join(WORKDIR, "irssi.png"), _PNG_DATA_)
     return notify
 
