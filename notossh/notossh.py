@@ -90,7 +90,7 @@ def write_icon(file, data):
     f.close()
 
 
-# define the command used with darwin systems
+# define the command used with growl on OSX
 def notify_growl(opts, cmd_opts, args):
     args = args.split(':')
 
@@ -101,6 +101,13 @@ def notify_growl(opts, cmd_opts, args):
         growl_command = [opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
 
     return subprocess.Popen(growl_command)
+
+# define the command used with OSX Mountain Lion
+def notify_terminal(opts, cmd_opts, args):
+    args = args.split(':')
+
+    notifier_command = [opts.notifier, '-title', 'irssi', '-message', args[0], '-subtitle', ':'.join(args[1:])]
+    return subprocess.Popen(notifier_command)
 
 
 # define the command used with linux systems
@@ -120,11 +127,17 @@ def notify_cli(opts, cmd_opts, args):
 def init(args):
     # define 'notify' function depending on running platform (whether it is darwin or linux)
     if sys.platform == 'darwin':
-        if not os.path.isfile(args.growl):
-            print 'Please install Growl and check if growlnotify exists and is correctly set in source'
-            sys.exit(1)
-        notify = notify_growl
-        write_icon(os.path.join(WORKDIR, "irssi.icns"), _ICON)
+        if args.notifier:
+            if not os.path.isfile(args.notifier):
+                print 'terminal-notifier not found in given path, please install terminal-notifier'
+                sys.exit(1)
+            notify = notify_terminal
+        else:
+            if not os.path.isfile(args.growl):
+                print 'Please install Growl and check if growlnotify exists and is correctly set in source'
+                sys.exit(1)
+            notify = notify_growl
+            write_icon(os.path.join(WORKDIR, "irssi.icns"), _ICON)
     elif sys.platform == 'linux2':
         if Notify:
             if args.verbose:
@@ -254,7 +267,11 @@ def start(notify_func=None):
                         dest='notify',
                         action='store',
                         default='/usr/bin/notify-send',
-                        help='Path to notify executable')
+                        help='Path to notify executable'),
+    parser.add_argument('-T', '--with-terminal-notifier',
+                        dest='notifier',
+                        action='store',
+                        help='Path to terminal-notifier executable')
 
     args = parser.parse_known_args()
     args[0].func(args)
