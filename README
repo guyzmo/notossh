@@ -64,6 +64,8 @@ OPTIONS
     -P PORT, --port PORT  Port to listen on
     -G GROWL, --with-growl GROWL
                             Path to growl executable
+    -T NOTIFIER, --with-notifier NOTIFIER
+                            Path to terminal-notifier executable
     -N NOTIFY, --with-notify NOTIFY
                             Path to notify executable
 
