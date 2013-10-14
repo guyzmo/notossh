@@ -106,7 +106,7 @@ def notify_growl(opts, cmd_opts, args):
 def notify_terminal(opts, cmd_opts, args):
     args = args.split(':')
 
-    notifier_command = [opts.notifier, '-title', 'irssi', '-message', args[0], '-subtitle', ':'.join(args[1:])]
+    notifier_command = [opts.notifier, '-sender', 'net.m0g.notossh', '-activate', 'com.apple.Terminal', '-title', 'notossh', '-message', args[0], '-subtitle', ':'.join(args[1:])]
     return subprocess.Popen(notifier_command)
 
 

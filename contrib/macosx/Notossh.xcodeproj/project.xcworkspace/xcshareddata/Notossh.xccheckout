@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>6376F2A3-3F3B-46C4-A2E4-2CE17416FE61</string>
+	<string>0001F604-EE5A-4C42-B151-DF6B3B551273</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Notossh</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>D0042FCF-FD62-4D17-93D5-7025B126F93B</string>
 			<key>IDESourceControlWCCName</key>
-			<string>notossh</string>
+			<string>Notossh</string>
 		</dict>
 	</array>
 </dict>

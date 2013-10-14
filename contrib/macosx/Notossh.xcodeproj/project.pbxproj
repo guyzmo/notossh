@@ -11,8 +11,6 @@
 		B43FF81E180C04DC00410B93 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B43FF81C180C04DC00410B93 /* InfoPlist.strings */; };
 		B43FF820180C04DC00410B93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B43FF81F180C04DC00410B93 /* main.m */; };
 		B43FF824180C04DC00410B93 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = B43FF822180C04DC00410B93 /* Credits.rtf */; };
-		B43FF827180C04DC00410B93 /* NotosshAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B43FF826180C04DC00410B93 /* NotosshAppDelegate.m */; };
-		B43FF82A180C04DC00410B93 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B43FF828180C04DC00410B93 /* MainMenu.xib */; };
 		B43FF82C180C04DC00410B93 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B43FF82B180C04DC00410B93 /* Images.xcassets */; };
 		B43FF833180C04DC00410B93 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B43FF832180C04DC00410B93 /* XCTest.framework */; };
 		B43FF834180C04DC00410B93 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B43FF813180C04DC00410B93 /* Cocoa.framework */; };
@@ -41,9 +39,6 @@
 		B43FF81F180C04DC00410B93 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B43FF821180C04DC00410B93 /* Notossh-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Notossh-Prefix.pch"; sourceTree = "<group>"; };
 		B43FF823180C04DC00410B93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		B43FF825180C04DC00410B93 /* NotosshAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotosshAppDelegate.h; sourceTree = "<group>"; };
-		B43FF826180C04DC00410B93 /* NotosshAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotosshAppDelegate.m; sourceTree = "<group>"; };
-		B43FF829180C04DC00410B93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		B43FF82B180C04DC00410B93 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B43FF831180C04DC00410B93 /* NotosshTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotosshTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B43FF832180C04DC00410B93 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -115,9 +110,6 @@
 		B43FF819180C04DC00410B93 /* Notossh */ = {
 			isa = PBXGroup;
 			children = (
-				B43FF825180C04DC00410B93 /* NotosshAppDelegate.h */,
-				B43FF826180C04DC00410B93 /* NotosshAppDelegate.m */,
-				B43FF828180C04DC00410B93 /* MainMenu.xib */,
 				B43FF82B180C04DC00410B93 /* Images.xcassets */,
 				B43FF81A180C04DC00410B93 /* Supporting Files */,
 			);
@@ -234,7 +226,6 @@
 				B43FF81E180C04DC00410B93 /* InfoPlist.strings in Resources */,
 				B43FF82C180C04DC00410B93 /* Images.xcassets in Resources */,
 				B43FF824180C04DC00410B93 /* Credits.rtf in Resources */,
-				B43FF82A180C04DC00410B93 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,7 +245,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B43FF820180C04DC00410B93 /* main.m in Sources */,
-				B43FF827180C04DC00410B93 /* NotosshAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,14 +281,6 @@
 				B43FF823180C04DC00410B93 /* en */,
 			);
 			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		B43FF828180C04DC00410B93 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B43FF829180C04DC00410B93 /* Base */,
-			);
-			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 		B43FF83A180C04DC00410B93 /* InfoPlist.strings */ = {
@@ -385,9 +367,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "Notossh/Notossh-Prefix.pch";
 				INFOPLIST_FILE = "Notossh/Notossh-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -398,9 +381,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "Notossh/Notossh-Prefix.pch";
 				INFOPLIST_FILE = "Notossh/Notossh-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

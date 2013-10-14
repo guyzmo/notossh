@@ -1,5 +1,5 @@
 //
-//  NotosshAppDelegate.h
+//  main.m
 //  Notossh
 //
 //  Created by Guyz Zmolotov on 10/14/13.
@@ -8,8 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NotosshAppDelegate : NSObject <NSApplicationDelegate>
-
-@property (assign) IBOutlet NSWindow *window;
-
-@end
+int main(int argc, const char * argv[])
+{
+    return 0;
+}
