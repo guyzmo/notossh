@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>6376F2A3-3F3B-46C4-A2E4-2CE17416FE61</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Notossh</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D0042FCF-FD62-4D17-93D5-7025B126F93B</key>
+		<string>ssh://github.com/guyzmo/notossh.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Notossh_Macosx/Notossh/Notossh.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D0042FCF-FD62-4D17-93D5-7025B126F93B</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/guyzmo/notossh.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D0042FCF-FD62-4D17-93D5-7025B126F93B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D0042FCF-FD62-4D17-93D5-7025B126F93B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>notossh</string>
+		</dict>
+	</array>
+</dict>
+</plist>

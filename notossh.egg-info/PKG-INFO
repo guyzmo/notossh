@@ -1,0 +1,163 @@
+Metadata-Version: 1.0
+Name: notossh
+Version: 1.0
+Summary: NOTifications Over SSH
+Home-page: http://m0g.net/notossh/
+Author: Bernard `Guyzmo` Pratz
+Author-email: notossh@m0g.net
+License: WTFPL
+Description: 
+        
+        WHATEVER
+        ========
+        
+        that code is a quick and dirty hack to get notifications over ssh from my server
+        running irssi to my workstation. Aimed to be extended with other notification
+        systems.
+        
+         * http://m0g.net/notossh/
+         * http://github.com/guyzmo/notossh
+         * http://i.got.nothing.to/blog/2010/06/21/on-screen-notifications-from-irssi-over-ssh
+        
+        for original notify.pl code :
+        
+         * http://lewk.org/log/code/irssi-notify
+        
+        INSTALL
+        =======
+        
+         * REMOTE SHELL running ERC
+        
+        TODO by someone who uses ERC!
+        
+         * REMOTE SHELL running IRSSI
+        
+        1/  copy 'notify.pl' to your ~/.irssi/scripts folder
+            i.e. scp notify.pl REMOTE:.irssi/scripts
+        2/  do '/load perl' and '/script load notify.pl' in irssi
+            - TIP: Add it to your irssi conf to auto load
+        3/  Ensure SSH allows remote tunnels - i.e. GatewayPorts yes
+        4/  configure the 'highlights' in your client. (if you don't know how RTFM !)
+            - /hilight -regex bla|bla
+        
+         * Local SSH Client
+        
+        1/  install the local service either by doing: 
+            1.1/ pip install notossh
+            1.2/ python setup.py install
+        4/  configure how you want to instance it
+            4.1/ configure your ssh client to run it (see below)
+            4.2/ make your own script (or launch it manually) : `notossh start`
+            4.3/ to end the service run : `notossh stop`
+        6/  if you don't like it as is... HACK IT !
+        
+        OPTIONS
+        =======
+        
+            usage: irssi-notify-listener.py [-h] [-f] [-S] [-V] [-H HOST] [-P PORT]
+                                            [-G GROWL] [-N NOTIFY]
+                                            {start,stop} ...
+        
+            IRSSI Notify Listener
+        
+            positional arguments:
+            {start,stop}
+                start               Starts the service
+                stop                Stops the service
+        
+            optional arguments:
+            -h, --help            show this help message and exit
+            -f, --foreground      Make the notifications stick
+            -S, --sticky          Make the notifications stick
+            -V, --verbose         Make the listener verbose
+            -H HOST, --host HOST  Host to listen on
+            -P PORT, --port PORT  Port to listen on
+            -G GROWL, --with-growl GROWL
+                                    Path to growl executable
+            -T NOTIFIER, --with-notifier NOTIFIER
+                                    Path to terminal-notifier executable
+            -N NOTIFY, --with-notify NOTIFY
+                                    Path to notify executable
+        
+        CONFIGURATION
+        =============
+        
+        add to your .ssh/config those lines, where HOST is the host and port the PORT you want
+        to connect to :
+        
+            Host HOST
+            PermitLocalCommand yes
+            LocalCommand "/path/to/bin/notossh start"
+            RemoteForward PORT localhost:PORT
+        
+        NOTIFICATIONS
+        =============
+        
+        to change the way notifications behaves, like on Fedora systems, you can change the notification
+        line to the following, making it transient :
+        
+            return [args.notify, '--hint', 'int:transient:1', '-i', 'dialog-information', '-t', '5000', ':'.join(args[1:]), args[0]]
+        
+        TODO
+        ====
+        
+         * enable passing through the arguments after -- to the notification service
+        
+        LICENCES
+        ========
+        
+        Since 2010, that code is aimed to be hacked.
+        Thanks to Charles `doublerebel` Philips, Rui Abreu Ferreira and Cooper Ry Lees for their hacks!
+        
+        notify.pl is under GPL (because I copy/pasted it from Luke Macken and Paul W. Frields)
+        
+        everything else is WTFPL (because I don't care what you do with it, but if you don't 
+        tell me you've improved it it, you're just a moron)
+        
+        And if you like it, buy me a beer ! 
+        
+        By Bernard `Guyzmo` Pratz
+        Mail-me on guyzmo at m0g dot net.
+        
+         * WTFPL
+        
+                DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+                            Version 2, December 2004 
+        
+         Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
+        
+         Everyone is permitted to copy and distribute verbatim or modified 
+         copies of this license document, and changing it is allowed as long 
+         as the name is changed. 
+        
+                    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+           TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+        
+          0. You just DO WHAT THE FUCK YOU WANT TO.
+        
+         * GPLv2
+        
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 2 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <http://www.gnu.org/licenses/>.
+        
+        EOF
+        
+        
+        
+Keywords: ssh irc notifications growl libnotify irssi erc daemon
+Platform: UNKNOWN
+Classifier: Environment :: Console
+Classifier: Topic :: Communications :: Chat :: Internet Relay Chat
+Classifier: Environment :: MacOS X
+Classifier: Environment :: X11 Applications
+Classifier: Topic :: Text Editors :: Emacs
