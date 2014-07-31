@@ -96,9 +96,9 @@ def notify_growl(opts, cmd_opts, args):
 
     growl_command = None
     if opts.sticky is True:
-        growl_command = [opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+        growl_command = [opts.growl, '-s', '-n', 'Terminal', '--image', 'irssi.icns', '-m', args[0], ':'.join(args[1:])]
     else:
-        growl_command = [opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', ':'.join(args[1:]), args[0]]
+        growl_command = [opts.growl, '-n', 'Terminal', '--image', 'irssi.icns', '-m', args[0], ':'.join(args[1:])]
 
     return subprocess.Popen(growl_command)
 
@@ -106,14 +106,14 @@ def notify_growl(opts, cmd_opts, args):
 def notify_terminal(opts, cmd_opts, args):
     args = args.split(':')
 
-    notifier_command = [opts.notifier, '-sender', 'net.m0g.notossh', '-activate', 'com.apple.Terminal', '-title', 'notossh', '-message', args[0], '-subtitle', ':'.join(args[1:])]
+    notifier_command = [opts.notifier, '-sender', 'net.m0g.notossh', '-activate', 'com.apple.Terminal', '-title', 'notossh', '-message', ':'.join(args[1:]), '-subtitle', args[0]]
     return subprocess.Popen(notifier_command)
 
 
 # define the command used with linux systems
 def notify_dbus(opts, cmd_opts, args):
     args = args.split(':')
-    n = Notify.Notification.new(':'.join(args[1:]), args[0], os.path.join(WORKDIR, 'irssi.png'))
+    n = Notify.Notification.new(args[0], ':'.join(args[1:]), os.path.join(WORKDIR, 'irssi.png'))
     n.set_category("im.received")
     n.show()
     return 0
@@ -121,7 +121,7 @@ def notify_dbus(opts, cmd_opts, args):
 
 def notify_cli(opts, cmd_opts, args):
     args = args.split(':')
-    return subprocess.Popen([opts.notify, '-i', os.path.join(WORKDIR, 'irssi.png'), '-t', '5000', ':'.join(args[1:]), args[0]])
+    return subprocess.Popen([opts.notify, '-i', os.path.join(WORKDIR, 'irssi.png'), '-t', '5000', args[0], ':'.join(args[1:])])
 
 
 def init(args):
