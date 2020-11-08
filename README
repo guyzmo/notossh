@@ -77,7 +77,7 @@ to connect to :
 
     Host HOST
     PermitLocalCommand yes
-    LocalCommand "/path/to/bin/notossh start"
+    LocalCommand /path/to/bin/notossh start
     RemoteForward PORT localhost:PORT
 
 NOTIFICATIONS
