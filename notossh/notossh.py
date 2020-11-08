@@ -124,6 +124,42 @@ def notify_cli(opts, cmd_opts, args):
     return subprocess.Popen([opts.notify, '-i', os.path.join(WORKDIR, 'irssi.png'), '-t', '5000', args[0], ':'.join(args[1:])])
 
 
+def irssi_focused(titles):
+    if not titles:
+        return False
+    title = None
+    if sys.platform == 'windows':
+        from win32gui import GetWindowText, GetForegroundWindow
+        title = GetWindowText(GetForegroundWindow()).lower()
+    elif sys.platform == "darwin":
+        from AppKit import NSWorkspace
+        title = NSWorkspace.sharedWorkspace().activeApplication()['NSApplicationName'].lower()
+    elif sys.platform == 'linux2':
+        title = get_linux_active_window_title().lower()
+    for t in titles:
+        if t in title:
+            return True
+    return False
+
+
+def get_linux_active_window_title():
+    from subprocess import Popen, PIPE
+    import re
+    root = Popen(['xprop', '-root', '_NET_ACTIVE_WINDOW'], stdout=PIPE)
+    for line in root.stdout:
+        m = re.search('^_NET_ACTIVE_WINDOW.* ([\w]+)$', line)
+        if m != None:
+            id_ = m.group(1)
+            id_w = Popen(['xprop', '-id', id_, 'WM_NAME'], stdout=PIPE)
+            break
+    if id_w != None:
+        for line in id_w.stdout:
+            match = re.match("WM_NAME\(\w+\) = (?P<name>.+)$", line)
+            if match != None:
+                return match.group("name")
+    return "Active window not found"
+
+
 def init(args):
     # define 'notify' function depending on running platform (whether it is darwin or linux)
     if sys.platform == 'darwin':
@@ -191,7 +227,8 @@ def service_start(args):
             if args.verbose:
                 print 'RCPT: %s' % str(data)
                 print 'Calling("%s")' % notify(args, left_args, data)
-            notify(args, left_args, data)
+            if not irssi_focused(args.windowtitle):
+                notify(args, left_args, data)
         conn.close()
 
     sys.exit(retCode)
@@ -272,6 +309,12 @@ def start(notify_func=None):
                         dest='notifier',
                         action='store',
                         help='Path to terminal-notifier executable')
+
+    parser.add_argument('-W', '--window-title',
+                        dest='windowtitle',
+                        action='append',
+                        default=[],
+                        help='Do not send notify if this window title is in foreground, specify multiple times to look for multiple titles')
 
     args = parser.parse_known_args()
     args[0].func(args)
